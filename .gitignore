@@ -59,3 +59,4 @@ typings/
 
 # jetbrains IDEs
 .idea
+.DS_Store

@@ -6,9 +6,9 @@ module.exports = function(app, db) {
     // -- setup up swagger-jsdoc --
     const swaggerDefinition = {
         info: {
-        title: 'Partmonger',
-        version: '1.0.0',
-        description: 'Simple Express based NodeJS API that mocks an inventory backend.',
+            title: 'Partmonger',
+            version: '1.0.1',
+            description: 'Simple Express based NodeJS API that mocks an inventory backend.',
         },
         host: 'localhost:9001',
         basePath: '/',
@@ -254,15 +254,19 @@ module.exports = function(app, db) {
      *   put:
      *     summary: Update a part
      *     description: Updates a part matching the ID, using the parameters provided.
+     *     parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *            type: integer
+     *        required: true
+     *        description: Numeric ID of the part to update
      *     requestBody:
      *       content:
      *         application/json:
      *           schema:
      *             type: object
      *             properties:
-     *                  id:
-     *                      type: integer
-     *                      required: true
      *                  cost:
      *                      type: integer
      *                      required: true
@@ -365,15 +369,22 @@ module.exports = function(app, db) {
      *   put:
      *     summary: Receive a part
      *     description: Receive a part matching the ID.
+     *     parameters:
+     *         - in: path
+     *           name: id
+     *           schema:
+     *               type: integer
+     *           required: true
+     *           description: Numeric ID of the part to receive
      *     requestBody:
      *       content:
      *         application/json:
      *           schema:
      *             type: object
      *             properties:
-     *                  id:
-     *                      type: integer
-     *                      required: true
+     *                 quantity:
+     *                     type: integer
+     *                     required: true
      *     responses:
      *       200:
      *         description: Returns the received part if one exists with the specified ID.
@@ -445,13 +456,20 @@ module.exports = function(app, db) {
      *   put:
      *     summary: Consume a part
      *     description: Consume a part matching the ID.
+     *     parameters:
+     *         - in: path
+     *           name: id
+     *           schema:
+     *               type: integer
+     *           required: true
+     *           description: Numeric ID of the part to consume
      *     requestBody:
      *       content:
      *         application/json:
      *           schema:
      *             type: object
      *             properties:
-     *                  id:
+     *                  quantity:
      *                      type: integer
      *                      required: true
      *     responses:
