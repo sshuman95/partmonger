@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="search-bar">
+    <form [formGroup]="searchForm" (submit)="handleSearch($event)">
+      <input
+        formControlName="query"
+        name="query"
+        type="text"
+        placeholder="Search Parts"
+      />
+      <button mat-flat-button color="primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="results">
+    <ng-container *ngIf="partList$ | async as parts; else loader">
+      <app-parts-list [parts]="parts"></app-parts-list>
+    </ng-container>
+    <ng-template #loader>
+      <p>Loading...</p>
+    </ng-template>
+  </div>
+</div>

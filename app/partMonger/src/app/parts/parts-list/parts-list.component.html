@@ -1,0 +1,8 @@
+<div class="grid">
+  <ng-container *ngIf="parts.length; else noResults">
+    <app-part *ngFor="let part of parts" [part]="part"></app-part>
+  </ng-container>
+  <ng-template #noResults>
+    <p>No results found</p>
+  </ng-template>
+</div>

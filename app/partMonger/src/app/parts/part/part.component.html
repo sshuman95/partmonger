@@ -1,0 +1,10 @@
+<div class="part" *ngIf="part">
+  <h3>{{ part?.name }}</h3>
+  <img *ngIf="part?.image; else placeholder" [src]="part?.image" />
+  <ng-template #placeholder>
+    <p>No image found</p>
+  </ng-template>
+  <div>
+    <p>{{ part?.description }}</p>
+  </div>
+</div>
