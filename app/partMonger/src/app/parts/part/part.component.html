@@ -1,10 +1,29 @@
-<div class="part" *ngIf="part">
-  <h3>{{ part?.name }}</h3>
-  <img *ngIf="part?.image; else placeholder" [src]="part?.image" />
-  <ng-template #placeholder>
-    <p>No image found</p>
-  </ng-template>
-  <div>
-    <p>{{ part?.description }}</p>
-  </div>
-</div>
+<mat-card class="part">
+  <mat-card-header>
+    <mat-card-title>{{ part.name }}</mat-card-title>
+    <mat-card-subtitle>
+      <span class="stock" [ngClass]="{ 'in-stock': part.inStock }"
+        ><strong>
+          {{ part.inStock ? "In Stock: " : "Out of stock" }}
+        </strong></span
+      >
+      <span *ngIf="part.inStock"
+        ><strong>{{ part.inStock }}</strong></span
+      >
+    </mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-lg-image [src]="part?.image" [alt]="part.name" />
+  <mat-card-content>
+    <p>{{ part.description }}</p>
+    <p><strong>Part Number:</strong> {{ part.partNumber }}</p>
+    <p><strong>Comments:</strong> {{ part.notes }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="handleReceive(part.id)">
+      Receive
+    </button>
+    <button mat-raised-button color="warn" [disabled]="part.inStock < 1" (click)="handleConsume(part.id)">
+      Consume
+    </button>
+  </mat-card-actions>
+</mat-card>

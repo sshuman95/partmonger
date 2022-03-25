@@ -5,7 +5,12 @@ export interface Part {
   description: string;
   name: string;
   notes: string;
-  inStock?: number;
+  inStock: number;
   image: string;
   isActive: boolean;
+}
+export interface AddPart {}
+
+export interface EditPart {
+  id: number;
 }

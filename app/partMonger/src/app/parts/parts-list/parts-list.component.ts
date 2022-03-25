@@ -8,4 +8,8 @@ import { Part } from '../../types/parts';
 })
 export class PartsListComponent {
   @Input() parts: Part[] = [];
+
+  track(_: number, part: Part) {
+    return part.id;
+  }
 }

@@ -4,24 +4,15 @@
   padding: 0 1rem;
   margin-top: 1rem;
   .search-bar {
-    margin-bottom: 1rem;
-    background-color: white;
-    padding: 0.25rem 0.5rem;
-    border: $border;
-    border-radius: $border-radius;
-    &:focus-within {
-      border: $border-focus;
-    }
-    form {
-      display: flex;
-      align-items: center;
-      input {
-        border: none;
-        width: 100%;
-        &:focus-visible {
-          outline: none;
-        }
-      }
+    input {
+      margin-bottom: 1rem;
+      background-color: white;
+      padding: 0.5rem 0;
+      border: $border;
+      border-radius: $border-radius;
+      width: 100%;
+      max-width: 100%;
+      text-indent: 0.5rem;
     }
   }
 

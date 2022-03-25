@@ -6,9 +6,26 @@ import { PartsListComponent } from './parts-list/parts-list.component';
 import { PartComponent } from './part/part.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { PartFormComponent } from './part-form/part-form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
-  declarations: [PartsComponent, PartsListComponent, PartComponent],
-  imports: [CommonModule, MatCardModule, ReactiveFormsModule, MatButtonModule],
+  declarations: [
+    PartsComponent,
+    PartsListComponent,
+    PartComponent,
+    PartFormComponent,
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+  ],
 })
 export class PartsModule {}

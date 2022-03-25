@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, Observable, startWith, Subject, switchMap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  mergeWith,
+  Observable,
+  startWith,
+  Subscription,
+} from 'rxjs';
 import { Part } from '../../types/parts';
 import { PartsService } from '../parts.service';
 
@@ -9,26 +16,24 @@ import { PartsService } from '../parts.service';
   templateUrl: './parts.component.html',
   styleUrls: ['./parts.component.scss'],
 })
-export class PartsComponent implements OnInit {
-  constructor(private partsService: PartsService) {}
-  searchForm = new FormGroup({
-    query: new FormControl(''),
-  });
-
+export class PartsComponent implements OnInit, OnDestroy {
+  query: FormControl;
   partList$?: Observable<Part[]>;
-
+  searchSub = new Subscription();
+  constructor(private partsService: PartsService) {
+    this.query = new FormControl('');
+  }
   ngOnInit(): void {
-    this.partList$ = this.partsService.searchObs$.pipe(
-      startWith(''),
-      debounceTime(300),
-      switchMap((query) => {
-        return this.partsService.getParts(query);
-      })
+    this.partList$ = this.partsService.searchParts$.pipe(
+      mergeWith(this.partsService.partCache$)
     );
+
+    this.searchSub = this.query.valueChanges
+      .pipe(startWith(''), debounceTime(300), distinctUntilChanged())
+      .subscribe((value) => this.partsService.handleSearch(value));
   }
 
-  handleSearch(event: SubmitEvent) {
-    event.preventDefault();
-    this.partsService.handleSearch(this.searchForm.get('query')?.value);
+  ngOnDestroy(): void {
+    this.searchSub.unsubscribe();
   }
 }

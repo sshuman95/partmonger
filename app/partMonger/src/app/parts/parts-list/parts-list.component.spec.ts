@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
 import { PARTSMOCK } from 'src/app/mocks/parts-mock';
 import { PartComponent } from '../part/part.component';
@@ -12,6 +14,7 @@ describe('PartsListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PartsListComponent, PartComponent],
+      imports: [HttpClientTestingModule, MatCardModule],
     }).compileComponents();
   });
 
@@ -28,6 +31,8 @@ describe('PartsListComponent', () => {
   it('should display a list of parts', () => {
     component.parts = PARTSMOCK;
     fixture.detectChanges();
-    expect(fixture.debugElement.queryAll(By.css('app-part')).length).toEqual(PARTSMOCK.length);
+    expect(fixture.debugElement.queryAll(By.css('app-part')).length).toEqual(
+      PARTSMOCK.length
+    );
   });
 });

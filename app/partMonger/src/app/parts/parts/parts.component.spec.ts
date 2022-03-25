@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { PartsListComponent } from '../parts-list/parts-list.component';
 import { PartsComponent } from './parts.component';
 
 describe('PartsComponent', () => {
@@ -10,7 +10,7 @@ describe('PartsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PartsComponent],
+      declarations: [PartsComponent, PartsListComponent],
       imports: [HttpClientTestingModule, ReactiveFormsModule],
     }).compileComponents();
   });
