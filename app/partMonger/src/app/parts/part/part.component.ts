@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Part } from '../../types/parts';
-import { PartsService } from '../parts.service';
+import { PartService } from '../parts.service';
 
 @Component({
   selector: 'app-part',
@@ -10,7 +10,7 @@ import { PartsService } from '../parts.service';
 export class PartComponent {
   @Input() part!: Part;
 
-  constructor(private partService: PartsService) {}
+  constructor(private partService: PartService) {}
 
   handleReceive(id: number) {
     this.partService

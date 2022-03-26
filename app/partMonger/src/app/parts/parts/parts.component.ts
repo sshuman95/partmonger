@@ -9,7 +9,7 @@ import {
   Subscription,
 } from 'rxjs';
 import { Part } from '../../types/parts';
-import { PartsService } from '../parts.service';
+import { PartService } from '../parts.service';
 
 @Component({
   selector: 'app-parts',
@@ -20,17 +20,17 @@ export class PartsComponent implements OnInit, OnDestroy {
   query: FormControl;
   partList$?: Observable<Part[]>;
   searchSub = new Subscription();
-  constructor(private partsService: PartsService) {
+  constructor(private partService: PartService) {
     this.query = new FormControl('');
   }
   ngOnInit(): void {
-    this.partList$ = this.partsService.searchParts$.pipe(
-      mergeWith(this.partsService.partCache$)
+    this.partList$ = this.partService.searchParts$.pipe(
+      mergeWith(this.partService.partCache$)
     );
 
     this.searchSub = this.query.valueChanges
       .pipe(startWith(''), debounceTime(300), distinctUntilChanged())
-      .subscribe((value) => this.partsService.handleSearch(value));
+      .subscribe((value) => this.partService.handleSearch(value));
   }
 
   ngOnDestroy(): void {

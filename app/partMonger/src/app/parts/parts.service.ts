@@ -8,7 +8,7 @@ import { CreatePart, Part } from '../types/parts';
 @Injectable({
   providedIn: 'root',
 })
-export class PartsService {
+export class PartService {
   constructor(private http: HttpClient, private errorService: ErrorService) {}
   private _url = environment.apiBase;
   get url() {

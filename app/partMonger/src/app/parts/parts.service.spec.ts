@@ -13,16 +13,16 @@ import {
   RECEIVEPARTSMOCK,
   UPDATEDPARTSMOCK,
 } from '../mocks/parts-mock';
-import { PartsService } from './parts.service';
+import { PartService } from './parts.service';
 
 describe('PartsService', () => {
-  let service: PartsService;
+  let service: PartService;
   let httpTestController: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(PartsService);
+    service = TestBed.inject(PartService);
     httpTestController = TestBed.inject(HttpTestingController);
   });
 
