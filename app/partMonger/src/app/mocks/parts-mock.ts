@@ -1,4 +1,4 @@
-import { Part } from '../types/parts';
+import { CreatePart, Part } from '../types/parts';
 
 export const PARTSMOCK: Part[] = [
   {
@@ -94,6 +94,53 @@ export const UPDATEDPARTSMOCK: Part[] = [
   },
 ];
 
+export const EDITEDPARTSMOCK = [
+  {
+    id: 1,
+    cost: 10,
+    partNumber: 'editedMockPart1',
+    description: 'edited mock part',
+    name: 'Edited Mock Part 1',
+    notes: 'Edited Mock note',
+    inStock: 10,
+    image: '',
+    isActive: true,
+  },
+  {
+    id: 2,
+    cost: 20,
+    partNumber: 'mockPart2',
+    description: 'mock part',
+    name: 'Mock Part 2',
+    notes: 'Mock note',
+    inStock: 2,
+    image: '',
+    isActive: false,
+  },
+  {
+    id: 3,
+    cost: 30,
+    partNumber: 'mockPart3',
+    description: 'mock part',
+    name: 'Mock Part 3',
+    notes: 'Mock note',
+    inStock: 3,
+    image: '',
+    isActive: false,
+  },
+  {
+    id: 4,
+    cost: 40,
+    partNumber: 'mockPart4',
+    description: 'mock part',
+    name: 'Mock Part 4',
+    notes: 'Mock note',
+    inStock: 4,
+    image: '',
+    isActive: false,
+  },
+];
+
 export const RECEIVEPARTSMOCK: Part = {
   id: 1,
   cost: 10,
@@ -106,7 +153,6 @@ export const RECEIVEPARTSMOCK: Part = {
   isActive: false,
 };
 
-
 export const CONSUMEPARTSMOCK: Part = {
   id: 1,
   cost: 10,
@@ -117,4 +163,32 @@ export const CONSUMEPARTSMOCK: Part = {
   inStock: 0,
   image: '',
   isActive: false,
+};
+
+export const EDITPARTMOCK: Part = {
+  id: 1,
+  cost: 10,
+  partNumber: 'editedMockPart1',
+  description: 'edited mock part',
+  name: 'Edited Mock Part 1',
+  notes: 'Edited Mock note',
+  inStock: 10,
+  image: '',
+  isActive: true,
+};
+
+export const CREATEPARTMOCK: CreatePart = {
+  partNumber: '12345',
+  name: 'Test Part Number',
+  description: 'Description goes here.',
+  cost: 1.0,
+  image: 'http://localhost:9001/images/myimage.jpg',
+  notes: '',
+};
+
+export const NEWPARTMOCK: Part = {
+  ...CREATEPARTMOCK,
+  id: 5,
+  inStock: 1,
+  isActive: true,
 };

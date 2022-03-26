@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Subject, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorService } from '../services/error.service';
-import { AddPart, EditPart, Part } from '../types/parts';
+import { CreatePart, Part } from '../types/parts';
 
 @Injectable({
   providedIn: 'root',
@@ -60,22 +60,16 @@ export class PartsService {
     });
   }
 
-  addPart(part: AddPart) {
-    return this.http
-      .post<Part>(`${this.url}/parts`, part)
-      .pipe(tap((res) => this.handleAddPart(res)));
+  addPart(part: CreatePart) {
+    return this.http.post<Part>(`${this.url}/parts`, part);
   }
 
-  editPart(part: EditPart) {
-    return this.http
-      .put<Part>(`${this.url}/parts/${part.id}`, part)
-      .pipe(tap((res) => this.handleEditPart(res)));
+  editPart(part: Part) {
+    return this.http.put<Part>(`${this.url}/parts/${part.id}`, part);
   }
 
   deletePart(id: number) {
-    return this.http
-      .delete<Part>(`${this.url}/parts/${id}`)
-      .pipe(tap((res) => this.handleDeletePart(res)));
+    return this.http.delete<Part>(`${this.url}/parts/${id}`);
   }
 
   handleUpdateQuantity(data: Part) {
@@ -96,7 +90,7 @@ export class PartsService {
   handleEditPart(data: Part) {
     this.parts = [...this.parts].map((p) => {
       if (p.id === data.id) {
-        return { ...p, data };
+        return { ...p, ...data };
       }
       return { ...p };
     });

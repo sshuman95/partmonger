@@ -9,7 +9,14 @@ export interface Part {
   image: string;
   isActive: boolean;
 }
-export interface AddPart {}
+export interface CreatePart {
+  partNumber: string;
+  name: string;
+  description: string;
+  cost: number;
+  image: string;
+  notes:string;
+}
 
 export interface EditPart {
   id: number;

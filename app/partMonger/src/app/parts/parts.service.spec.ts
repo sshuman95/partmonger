@@ -5,6 +5,10 @@ import {
 import { TestBed } from '@angular/core/testing';
 import {
   CONSUMEPARTSMOCK,
+  CREATEPARTMOCK,
+  EDITEDPARTSMOCK,
+  EDITPARTMOCK,
+  NEWPARTMOCK,
   PARTSMOCK,
   RECEIVEPARTSMOCK,
   UPDATEDPARTSMOCK,
@@ -52,8 +56,18 @@ describe('PartsService', () => {
     req.flush([...PARTSMOCK].filter((p) => p.id === 1));
   });
 
+  it('should return a part with a matching ID', () => {
+    service.getPartById(1).subscribe((res) => {
+      expect(res).toBeTruthy();
+      expect(res.id).toEqual(1);
+      expect(res).toEqual(PARTSMOCK[0]);
+    });
+    const req = httpTestController.expectOne('http://localhost:9001/parts/1');
+    expect(req.request.method).toEqual('GET');
+    req.flush(PARTSMOCK[0]);
+  });
+
   it('should increase the inStock quantity of a part given an ID', () => {
-    spyOn(service, 'handleUpdateQuantity');
     service.receivePart(PARTSMOCK[0].id).subscribe((data) => {
       expect(data).toEqual(RECEIVEPARTSMOCK);
     });
@@ -65,7 +79,6 @@ describe('PartsService', () => {
   });
 
   it('should decrease the inStock quantity of a part given an ID', () => {
-    spyOn(service, 'handleUpdateQuantity');
     service.consumePart(PARTSMOCK[0].id).subscribe((data) => {
       expect(data).toEqual(CONSUMEPARTSMOCK);
     });
@@ -76,14 +89,35 @@ describe('PartsService', () => {
     req.flush(CONSUMEPARTSMOCK);
   });
 
-  it('should return a part with a matching ID', () => {
-    service.getPartById(1).subscribe((res) => {
-      expect(res).toBeTruthy();
-      expect(res.id).toEqual(1);
-      expect(res).toEqual(PARTSMOCK[0]);
+  it('should create a new part', () => {
+    service.addPart(CREATEPARTMOCK).subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data).toEqual(NEWPARTMOCK);
+    });
+    const req = httpTestController.expectOne('http://localhost:9001/parts');
+    expect(req.request.method).toEqual('POST');
+    req.flush(NEWPARTMOCK);
+  });
+
+  it('should edit a part', () => {
+    service.editPart(EDITPARTMOCK).subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data).toEqual(EDITPARTMOCK);
+    });
+    const req = httpTestController.expectOne(
+      `http://localhost:9001/parts/${EDITPARTMOCK.id}`
+    );
+    expect(req.request.method).toEqual('PUT');
+    req.flush(EDITPARTMOCK);
+  });
+
+  it('should delete a part', () => {
+    service.deletePart(1).subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data).toEqual(PARTSMOCK[0]);
     });
     const req = httpTestController.expectOne('http://localhost:9001/parts/1');
-    expect(req.request.method).toEqual('GET');
+    expect(req.request.method).toEqual('DELETE');
     req.flush(PARTSMOCK[0]);
   });
 
@@ -106,6 +140,42 @@ describe('PartsService', () => {
     });
     service.handleUpdateQuantity({ ...PARTSMOCK[0], inStock: 50 });
     expect(service.parts).toEqual(UPDATEDPARTSMOCK);
+  });
+
+  it('should add a new part to the cache', (done: DoneFn) => {
+    service.parts = [...PARTSMOCK];
+    service.partCache$.subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data.length).toBeGreaterThan(PARTSMOCK.length);
+      expect(data).toEqual([...PARTSMOCK, NEWPARTMOCK]);
+      done();
+    });
+    service.handleAddPart(NEWPARTMOCK);
+    expect(service.parts).toEqual([...PARTSMOCK, NEWPARTMOCK]);
+  });
+
+  it('should remove a part from the cache', (done: DoneFn) => {
+    service.parts = [...PARTSMOCK];
+    service.partCache$.subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data.length).toBeLessThan(PARTSMOCK.length);
+      expect(data).toEqual(PARTSMOCK.slice(0, PARTSMOCK.length - 1));
+      done();
+    });
+    service.handleDeletePart(PARTSMOCK[PARTSMOCK.length - 1]);
+    expect(service.parts).toEqual(PARTSMOCK.slice(0, PARTSMOCK.length - 1));
+  });
+
+  it('should update a part in the cache', (done: DoneFn) => {
+    service.parts = [...PARTSMOCK];
+    service.partCache$.subscribe((data) => {
+      expect(data).toBeTruthy();
+      expect(data.length).toEqual(PARTSMOCK.length);
+      expect(data).toEqual(EDITEDPARTSMOCK);
+      done();
+    });
+    service.handleEditPart(EDITPARTMOCK);
+    expect(service.parts).toEqual(EDITEDPARTSMOCK);
   });
 
   afterEach(() => {
