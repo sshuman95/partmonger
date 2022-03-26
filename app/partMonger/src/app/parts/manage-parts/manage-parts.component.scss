@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  display: flex;
+  .list {
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 0px);
+    overflow: hidden;
+    width: 350px;
+    top: 0;
+  }
+
+  .content {
+    width: 100%;
+  }
+}

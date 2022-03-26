@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Part } from '../../types/parts';
 import { PartService } from '../parts.service';
 
 @Component({
@@ -8,6 +10,9 @@ import { PartService } from '../parts.service';
 })
 export class ManagePartsComponent implements OnInit {
   constructor(private partService: PartService) {}
+  partList$?: Observable<Part[]>;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.partList$ = this.partService.getParts();
+  }
 }

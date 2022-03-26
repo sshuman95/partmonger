@@ -1,8 +1,15 @@
-<div>
-  <div>
-    <p>Parts list....</p>
+<div class="container">
+  <div class="list">
+    <ng-container *ngIf="partList$ | async as parts">
+      <div>
+        <a [routerLink]="['new']">Add a new part</a>
+      </div>
+      <div *ngFor="let part of parts">
+        <a [routerLink]="[part.id]">{{ part.name }}</a>
+      </div>
+    </ng-container>
   </div>
-  <div>
+  <div class="content">
     <router-outlet></router-outlet>
   </div>
 </div>
