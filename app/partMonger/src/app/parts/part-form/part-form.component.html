@@ -28,6 +28,19 @@
       }}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+      <mat-label>Stock Quantity</mat-label>
+      <input
+        type="number"
+        [min]="0"
+        matInput
+        placeholder="Stock Quantity"
+        formControlName="inStock"
+      />
+      <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
+        getInStockError()
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" [hideRequiredMarker]="true">
       <mat-label>Description</mat-label>
       <textarea
         matInput
@@ -45,20 +58,7 @@
         requiredMessage
       }}</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill" [hideRequiredMarker]="true">
-      <mat-label>Stock Quantity</mat-label>
-      <input
-        type="number"
-        [min]="0"
-        matInput
-        placeholder="Stock Quantity"
-        formControlName="inStock"
-      />
-      <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
-        getInStockError()
-      }}</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+    <mat-form-field class="image" appearance="fill" [hideRequiredMarker]="true">
       <mat-label>Image url</mat-label>
       <input matInput formControlName="image" placeholder="Image Url" />
     </mat-form-field>
