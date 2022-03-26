@@ -10,6 +10,10 @@ import { PartFormComponent } from './part-form/part-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { ManagePartsComponent } from './manage-parts/manage-parts.component';
+import { NewPartComponent } from './new-part/new-part.component';
+import { EditPartComponent } from './edit-part/edit-part.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,9 @@ import { MatRadioModule } from '@angular/material/radio';
     PartsListComponent,
     PartComponent,
     PartFormComponent,
+    ManagePartsComponent,
+    NewPartComponent,
+    EditPartComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +33,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    RouterModule,
   ],
 })
 export class PartsModule {}
