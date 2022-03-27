@@ -1,1 +1,72 @@
-<p>edit-part works!</p>
+<div>
+  <ng-container *ngIf="partForm$ | async as partForm">
+    <form
+      [formGroup]="partForm"
+      class="part-form"
+      (submit)="handleSubmit($event, partForm)"
+    >
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Part Name</mat-label>
+        <input matInput placeholder="Part name" formControlName="name" />
+        <mat-error *ngIf="partForm.get('name')?.invalid">{{
+          requiredMessage
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Part number</mat-label>
+        <input
+          matInput
+          placeholder="Part number"
+          formControlName="partNumber"
+        />
+        <mat-error *ngIf="partForm.get('partNumber')?.invalid">{{
+          requiredMessage
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Cost</mat-label>
+        <input
+          type="number"
+          [min]="0"
+          matInput
+          placeholder="Cost"
+          formControlName="cost"
+        />
+        <mat-error *ngIf="partForm.get('cost')?.invalid">{{
+          getCostError(partForm)
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Image url</mat-label>
+        <input matInput formControlName="image" placeholder="Image Url" />
+      </mat-form-field>
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Description"
+        ></textarea>
+        <mat-error *ngIf="partForm.get('partNumber')?.invalid">{{
+          requiredMessage
+        }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+        <mat-label>Notes</mat-label>
+        <textarea
+          matInput
+          formControlName="notes"
+          placeholder="Notes"
+        ></textarea>
+        <mat-error *ngIf="partForm.get('notes')?.invalid">{{
+          requiredMessage
+        }}</mat-error>
+      </mat-form-field>
+      <mat-radio-group formControlName="isActive">
+        <mat-radio-button [value]="true">Active</mat-radio-button>
+        <mat-radio-button [value]="false">Inactive</mat-radio-button>
+      </mat-radio-group>
+      <button type="submit">Save</button>
+    </form>
+  </ng-container>
+</div>

@@ -15,7 +15,7 @@ export interface CreatePart {
   description: string;
   cost: number;
   image: string;
-  notes:string;
+  notes: string;
 }
 
 export interface EditPart {

@@ -1,15 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Subject, switchMap, tap } from 'rxjs';
+import { map, Observable, Subject, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ErrorService } from '../services/error.service';
 import { CreatePart, Part } from '../types/parts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PartService {
-  constructor(private http: HttpClient, private errorService: ErrorService) {}
+  constructor(private http: HttpClient) {}
   private _url = environment.apiBase;
   get url() {
     return this._url;
@@ -28,19 +27,22 @@ export class PartService {
     let request = query?.length
       ? `${this.url}/parts?search=${query}`
       : `${this.url}/parts`;
-    return this.http.get<Part[]>(request).pipe(
-      tap((data) => (this.parts = [...data])),
-      catchError(this.errorService.handleError<Part[]>('getParts', []))
-    );
+    return this.http
+      .get<Part[]>(request)
+      .pipe(tap((data) => (this.parts = [...data])));
   }
 
-  getPartById(id: number) {
+  getPartById(id: number): Observable<Part> {
     return this.http
-      .get<Part>(`${this.url}/parts/${id}`)
+      .get<Part | { errors: string[] }>(`${this.url}/parts/${id}`)
       .pipe(
-        catchError(
-          this.errorService.handleError<Part>(`getPartByID ${id}`, undefined)
-        )
+        map((data) => {
+          if ('errors' in data) {
+            console.error(data.errors);
+            return this.getNewPart();
+          }
+          return data;
+        })
       );
   }
 
@@ -100,5 +102,19 @@ export class PartService {
   handleDeletePart(data: Part) {
     this.parts = [...this.parts].filter((p) => p.id !== data.id);
     this._cache.next([...this.parts]);
+  }
+
+  getNewPart(): Part {
+    return {
+      id: 0,
+      cost: 0,
+      partNumber: '',
+      description: '',
+      name: '',
+      notes: '',
+      inStock: 0,
+      image: '',
+      isActive: true,
+    };
   }
 }

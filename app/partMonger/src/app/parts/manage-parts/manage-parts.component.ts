@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { mergeWith, Observable } from 'rxjs';
 import { Part } from '../../types/parts';
 import { PartService } from '../parts.service';
 
@@ -13,6 +13,12 @@ export class ManagePartsComponent implements OnInit {
   partList$?: Observable<Part[]>;
 
   ngOnInit(): void {
-    this.partList$ = this.partService.getParts();
+    this.partList$ = this.partService
+      .getParts()
+      .pipe(mergeWith(this.partService.partCache$));
+  }
+
+  track(_: number, part: Part) {
+    return part.id;
   }
 }

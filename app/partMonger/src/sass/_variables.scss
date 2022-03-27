@@ -1,7 +1,7 @@
 @import "~@angular/material/theming";
 @include mat-core();
 
-$primary: mat-palette($mat-indigo);
+$primary: mat-color($mat-indigo, 500);
 $border: 1px solid lightgrey;
 $border-radius: 8px;
 $border-focus: 1px solid mat-color($mat-indigo);

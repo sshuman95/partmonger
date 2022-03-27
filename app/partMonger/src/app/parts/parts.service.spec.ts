@@ -67,6 +67,17 @@ describe('PartsService', () => {
     req.flush(PARTSMOCK[0]);
   });
 
+  it('should return a new part if id is not found', () => {
+    service.getPartById(500).subscribe((res) => {
+      expect(res).toBeTruthy();
+      expect(res.id).toEqual(0);
+      expect(res).toEqual(service.getNewPart());
+    });
+    const req = httpTestController.expectOne('http://localhost:9001/parts/500');
+    expect(req.request.method).toEqual('GET');
+    req.flush({ errors: ['There was an error'] });
+  });
+
   it('should increase the inStock quantity of a part given an ID', () => {
     service.receivePart(PARTSMOCK[0].id).subscribe((data) => {
       expect(data).toEqual(RECEIVEPARTSMOCK);

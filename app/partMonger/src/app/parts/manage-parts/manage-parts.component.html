@@ -2,10 +2,20 @@
   <div class="list">
     <ng-container *ngIf="partList$ | async as parts">
       <div>
-        <a [routerLink]="['new']">Add a new part</a>
+        <a
+          [routerLink]="['new']"
+          class="part-link"
+          [routerLinkActive]="['is-active']"
+          >Add a new part</a
+        >
       </div>
-      <div *ngFor="let part of parts">
-        <a [routerLink]="[part.id]">{{ part.name }}</a>
+      <div *ngFor="let part of parts; trackBy: track">
+        <a
+          [routerLink]="[part.id]"
+          class="part-link"
+          [routerLinkActive]="['is-active']"
+          >{{ part.name }}</a
+        >
       </div>
     </ng-container>
   </div>
