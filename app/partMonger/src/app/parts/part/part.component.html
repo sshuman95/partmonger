@@ -16,10 +16,13 @@
   <mat-card-content>
     <p>{{ part.description }}</p>
     <p><strong>Part Number:</strong> {{ part.partNumber }}</p>
+    <p><strong>Price:</strong> {{ part.cost | currency }}</p>
     <p><strong>Comments:</strong> {{ part.notes }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button class="edit" (click)="handleNavigate(part.id)">Edit</button>
+    <button mat-raised-button class="edit" (click)="handleNavigate(part.id)">
+      Edit
+    </button>
     <div>
       <button
         mat-raised-button

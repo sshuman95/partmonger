@@ -26,7 +26,19 @@
       getCostError()
     }}</mat-error>
   </mat-form-field>
-
+  <mat-form-field appearance="fill" [hideRequiredMarker]="true">
+    <mat-label>In Stock Quantity</mat-label>
+    <input
+      type="number"
+      [min]="0"
+      matInput
+      placeholder="In Stock Quantity"
+      formControlName="inStock"
+    />
+    <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
+      getStockError()
+    }}</mat-error>
+  </mat-form-field>
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Description</mat-label>
     <textarea

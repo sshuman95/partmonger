@@ -356,6 +356,7 @@ module.exports = function(app, db) {
             part.partNumber = req.body.partNumber;
             part.description = req.body.description;
             part.cost = parseInt(req.body.cost);
+            part.inStock = parseInt(req.body.inStock);
             part.name = req.body.name;
             part.notes = req.body.notes;
             db.parts.update(query, part, options);
