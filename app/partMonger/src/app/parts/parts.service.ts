@@ -99,8 +99,8 @@ export class PartService {
     this._cache.next([...this.parts]);
   }
 
-  handleDeletePart(data: Part) {
-    this.parts = [...this.parts].filter((p) => p.id !== data.id);
+  handleDeletePart(id: number) {
+    this.parts = [...this.parts].filter((p) => p.id !== id);
     this._cache.next([...this.parts]);
   }
 

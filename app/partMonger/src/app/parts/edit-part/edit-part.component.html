@@ -47,7 +47,7 @@
           formControlName="description"
           placeholder="Description"
         ></textarea>
-        <mat-error *ngIf="partForm.get('partNumber')?.invalid">{{
+        <mat-error *ngIf="partForm.get('description')?.invalid">{{
           requiredMessage
         }}</mat-error>
       </mat-form-field>
@@ -62,11 +62,15 @@
           requiredMessage
         }}</mat-error>
       </mat-form-field>
-      <mat-radio-group formControlName="isActive">
-        <mat-radio-button [value]="true">Active</mat-radio-button>
-        <mat-radio-button [value]="false">Inactive</mat-radio-button>
-      </mat-radio-group>
-      <button type="submit">Save</button>
+      <button type="submit" mat-raised-button color="primary">Save</button>
     </form>
+    <button
+      mat-raised-button
+      color="warn"
+      class="delete"
+      (click)="handleDeletePart(partForm.get('id')?.value)"
+    >
+      Delete part
+    </button>
   </ng-container>
 </div>

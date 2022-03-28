@@ -4,6 +4,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +22,9 @@ describe('EditPartComponent', () => {
   beforeEach(async () => {
     serviceSpy = jasmine.createSpyObj('PartService', [
       'editPart',
+      'deletePart',
       'handleEditPart',
+      'handleDeletePart',
       'getPartById',
     ]);
 
@@ -145,5 +148,20 @@ describe('EditPartComponent', () => {
       expect(router.navigateByUrl).toHaveBeenCalledWith('manage/new');
       done();
     });
+  });
+
+  it('should delete a part and navigate to /new', () => {
+    serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
+    serviceSpy.deletePart.and.returnValue(of(PARTSMOCK[0]));
+    spyOn(router, 'navigateByUrl');
+    fixture.detectChanges();
+    let button = fixture.debugElement.query(By.css('.delete')).nativeElement;
+    button.click();
+    fixture.detectChanges();
+    expect(serviceSpy.deletePart).toHaveBeenCalled();
+    expect(serviceSpy.deletePart).toHaveBeenCalledWith(1);
+    expect(serviceSpy.handleDeletePart).toHaveBeenCalled();
+    expect(serviceSpy.handleDeletePart).toHaveBeenCalledWith(1);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('manage/new');
   });
 });

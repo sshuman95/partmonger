@@ -173,7 +173,7 @@ describe('PartsService', () => {
       expect(data).toEqual(PARTSMOCK.slice(0, PARTSMOCK.length - 1));
       done();
     });
-    service.handleDeletePart(PARTSMOCK[PARTSMOCK.length - 1]);
+    service.handleDeletePart(PARTSMOCK[PARTSMOCK.length - 1].id);
     expect(service.parts).toEqual(PARTSMOCK.slice(0, PARTSMOCK.length - 1));
   });
 

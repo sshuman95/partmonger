@@ -71,4 +71,11 @@ export class EditPartComponent implements OnInit {
       });
     }
   }
+
+  handleDeletePart(id: number) {
+    this.partService.deletePart(id).subscribe((data) => {
+      this.partService.handleDeletePart(data.id);
+      this.router.navigateByUrl('manage/new');
+    });
+  }
 }
