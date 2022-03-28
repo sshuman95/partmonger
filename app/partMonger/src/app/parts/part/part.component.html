@@ -19,11 +19,25 @@
     <p><strong>Comments:</strong> {{ part.notes }}</p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="handleReceive(part.id)">
-      Receive
-    </button>
-    <button mat-raised-button color="warn" [disabled]="part.inStock < 1" (click)="handleConsume(part.id)">
-      Consume
-    </button>
+    <button mat-raised-button class="edit" (click)="handleNavigate(part.id)">Edit</button>
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="receive"
+        (click)="handleReceive(part.id)"
+      >
+        Receive
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        class="consume"
+        [disabled]="part.inStock < 1"
+        (click)="handleConsume(part.id)"
+      >
+        Consume
+      </button>
+    </div>
   </mat-card-actions>
 </mat-card>

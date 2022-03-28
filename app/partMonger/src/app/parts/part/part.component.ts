@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Part } from '../../types/parts';
 import { PartService } from '../parts.service';
 
@@ -10,7 +12,7 @@ import { PartService } from '../parts.service';
 export class PartComponent {
   @Input() part!: Part;
 
-  constructor(private partService: PartService) {}
+  constructor(private partService: PartService, private router: Router) {}
 
   handleReceive(id: number) {
     this.partService
@@ -22,5 +24,9 @@ export class PartComponent {
     this.partService
       .consumePart(id)
       .subscribe((res) => this.partService.handleUpdateQuantity(res));
+  }
+
+  handleNavigate(id: number) {
+    this.router.navigateByUrl(`manage/${id}`);
   }
 }
