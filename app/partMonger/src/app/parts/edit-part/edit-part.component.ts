@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { map, Observable, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { map, Observable, switchMap, tap } from 'rxjs';
 import { Part } from '../../types/parts';
 import { PartService } from '../parts.service';
 
@@ -11,11 +12,11 @@ import { PartService } from '../parts.service';
   styleUrls: ['./edit-part.component.scss'],
 })
 export class EditPartComponent implements OnInit {
-  part$?: Observable<Part>;
   requiredMessage = 'This field is required';
   partForm$?: Observable<FormGroup>;
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private partService: PartService
   ) {}
 
@@ -23,9 +24,14 @@ export class EditPartComponent implements OnInit {
     this.partForm$ = this.route.params.pipe(
       switchMap((params) => {
         let id = !isNaN(+params['id']) ? +params['id'] : 0;
-        return this.partService
-          .getPartById(id)
-          .pipe(map((data) => this.initForm(data)));
+        return this.partService.getPartById(id).pipe(
+          tap((data) => {
+            if (!data.id) {
+              this.router.navigateByUrl('manage/new');
+            }
+          }),
+          map((data) => this.initForm(data))
+        );
       })
     );
   }
