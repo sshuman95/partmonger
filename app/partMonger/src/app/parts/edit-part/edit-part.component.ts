@@ -23,7 +23,6 @@ export class EditPartComponent implements OnInit {
     this.partForm$ = this.route.params.pipe(
       switchMap((params) => {
         let id = !isNaN(+params['id']) ? +params['id'] : 0;
-        console.log(id);
         return this.partService
           .getPartById(id)
           .pipe(map((data) => this.initForm(data)));
@@ -59,6 +58,7 @@ export class EditPartComponent implements OnInit {
 
   handleSubmit(event: SubmitEvent, form: FormGroup) {
     event.preventDefault();
+    form.markAllAsTouched();
     if (form.valid) {
       this.partService.editPart({ ...form.value }).subscribe((res) => {
         this.partService.handleEditPart(res);
