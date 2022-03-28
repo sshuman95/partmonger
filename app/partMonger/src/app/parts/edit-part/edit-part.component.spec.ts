@@ -137,9 +137,7 @@ describe('EditPartComponent', () => {
   });
 
   it('should redirect if no id is provided', (done: DoneFn) => {
-    let res = { ...PARTSMOCK[0], cost: 100 };
     serviceSpy.getPartById.and.returnValue(of({ ...PARTSMOCK[0], id: 0 }));
-    serviceSpy.editPart.and.returnValue(of(res));
     spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
