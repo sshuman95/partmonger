@@ -66,7 +66,7 @@ describe('NewPartComponent', () => {
       cost: 100,
       isActive: true,
     };
-    serviceSpy.addPart.and.returnValue(of({ ...data, id: 5, inStock: 1 }));
+    serviceSpy.addPart.and.returnValue(of({ ...data, id: 5 }));
     component.partForm.setValue({
       name: 'Sidney Test Part',
       cost: 100,
@@ -87,7 +87,6 @@ describe('NewPartComponent', () => {
     expect(serviceSpy.handleAddPart).toHaveBeenCalledWith({
       ...data,
       id: 5,
-      inStock: 1,
     });
   });
 });

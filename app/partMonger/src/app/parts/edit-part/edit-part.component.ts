@@ -48,7 +48,6 @@ export class EditPartComponent implements OnInit {
       notes: new FormControl(part.notes ? part.notes : ''),
       image: new FormControl(part.image ? part.image : ''),
       isActive: new FormControl(part.isActive),
-      inStock: new FormControl(part.inStock),
       id: new FormControl(part.id),
     });
     return partForm;
@@ -60,15 +59,6 @@ export class EditPartComponent implements OnInit {
     }
     return partForm.get('cost')?.hasError('min')
       ? 'Cost must be greater than 0.'
-      : '';
-  }
-
-  getStockError(partForm: FormGroup) {
-    if (partForm.get('inStock')?.hasError('required')) {
-      return this.requiredMessage;
-    }
-    return partForm.get('inStock')?.hasError('min')
-      ? 'Stock Quantity must be greater than 0.'
       : '';
   }
 
