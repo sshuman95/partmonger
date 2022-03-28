@@ -1,4 +1,4 @@
-<form [formGroup]="partForm" class="part-form">
+<form [formGroup]="partForm" (submit)="handleSubmit($event)" class="part-form">
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Part Name</mat-label>
     <input matInput placeholder="Part name" formControlName="name" />
@@ -49,8 +49,6 @@
     <mat-label>Image url</mat-label>
     <input matInput formControlName="image" placeholder="Image Url" />
   </mat-form-field>
-  <mat-radio-group formControlName="isActive">
-    <mat-radio-button [value]="true">Active</mat-radio-button>
-    <mat-radio-button [value]="false">Inactive</mat-radio-button>
-  </mat-radio-group>
+
+  <button type="submit">Submit</button>
 </form>

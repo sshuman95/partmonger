@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CreatePart } from 'src/app/types/parts';
+import { PartService } from '../parts.service';
 
 @Component({
   selector: 'app-new-part',
@@ -9,7 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class NewPartComponent {
   requiredMessage = 'This field is required';
   partForm: FormGroup;
-  constructor() {
+  constructor(private partService: PartService) {
     this.partForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       cost: new FormControl(0, [Validators.required, Validators.min(0)]),
@@ -29,5 +31,24 @@ export class NewPartComponent {
     return this.partForm?.get('cost')?.hasError('min')
       ? 'Cost must be greater than 0.'
       : '';
+  }
+
+  handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    this.partForm.markAllAsTouched();
+    if (this.partForm.valid) {
+      let data: CreatePart = {
+        name: this.partForm.get('name')?.value,
+        partNumber: this.partForm.get('partNumber')?.value,
+        description: this.partForm.get('description')?.value,
+        notes: this.partForm.get('notes')?.value,
+        image: this.partForm.get('image')?.value,
+        cost: this.partForm.get('cost')?.value,
+        isActive: this.partForm.get('isActive')?.value,
+      };
+      this.partService
+        .addPart(data)
+        .subscribe((res) => this.partService.handleAddPart(res));
+    }
   }
 }

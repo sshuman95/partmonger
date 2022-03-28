@@ -16,6 +16,7 @@ export interface CreatePart {
   cost: number;
   image: string;
   notes: string;
+  isActive: boolean;
 }
 
 export interface EditPart {
