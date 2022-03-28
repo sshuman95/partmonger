@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { PARTSMOCK } from 'src/app/mocks/parts-mock';
 import { ManagePartsComponent } from './manage-parts.component';
 
 describe('ManagePartsComponent', () => {
@@ -22,5 +23,9 @@ describe('ManagePartsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it("should return a part's id", () => {
+    expect(component.track(0, PARTSMOCK[0])).toEqual(1);
   });
 });
