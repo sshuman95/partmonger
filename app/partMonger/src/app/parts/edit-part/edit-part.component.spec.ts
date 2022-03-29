@@ -96,14 +96,11 @@ describe('EditPartComponent', () => {
     expect(component.getStockError(new FormGroup({}))).toEqual('');
   });
 
-  it('should submit a valid part and call handleUpdate', () => {
+  it('should submit a valid part and call handleUpdate', (done:DoneFn) => {
     let form = new FormGroup({});
     let part = PARTSMOCK[0];
     serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.editPart.and
-      .callThrough()
-      .and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
-    serviceSpy.handleEditPart.and.callThrough();
+    serviceSpy.editPart.and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -118,18 +115,15 @@ describe('EditPartComponent', () => {
         inStock: part.inStock,
       });
       form = val;
+      done();
     });
     form.get('cost')?.setValue(100);
     form.get('inStock')?.setValue(500);
     fixture.detectChanges();
     component.handleSubmit(new SubmitEvent('submit'), form);
     fixture.detectChanges();
-    expect(serviceSpy.editPart).toHaveBeenCalledWith(form.value);
-    expect(serviceSpy.editPart.calls.mostRecent().args[0]).toEqual(form.value);
-    expect(serviceSpy.handleEditPart).toHaveBeenCalledTimes(1);
-    expect(serviceSpy.handleEditPart.calls.mostRecent().args[0]).toEqual(
-      form.value
-    );
+    expect(serviceSpy.editPart).toHaveBeenCalled();
+    expect(serviceSpy.handleEditPart).toHaveBeenCalled();
   });
 
   it('should not submit an invalid part', (done: DoneFn) => {
@@ -178,10 +172,8 @@ describe('EditPartComponent', () => {
     let button = fixture.debugElement.query(By.css('.delete')).nativeElement;
     button.click();
     fixture.detectChanges();
-    expect(serviceSpy.deletePart).toHaveBeenCalled();
-    expect(serviceSpy.deletePart).toHaveBeenCalledWith(1);
-    expect(serviceSpy.handleDeletePart).toHaveBeenCalled();
-    expect(serviceSpy.handleDeletePart).toHaveBeenCalledWith(1);
+    expect(serviceSpy.deletePart).toHaveBeenCalledOnceWith(1)
+    expect(serviceSpy.handleDeletePart).toHaveBeenCalledOnceWith(1);
     expect(router.navigateByUrl).toHaveBeenCalledWith('manage/new');
   });
 });

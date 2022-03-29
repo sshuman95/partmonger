@@ -53,9 +53,8 @@ describe('PartComponent', () => {
       By.css('.receive')
     ).nativeElement;
     receiveButton.click();
-    expect(serviceSpy.receivePart).toHaveBeenCalled();
-    expect(serviceSpy.receivePart).toHaveBeenCalledWith(component.part.id);
-    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalledWith(res);
+    expect(serviceSpy.receivePart).toHaveBeenCalledOnceWith(component.part.id);
+    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalled();
   });
 
   it('should call consumePart and update the quantity', () => {
@@ -65,9 +64,8 @@ describe('PartComponent', () => {
       By.css('.consume')
     ).nativeElement;
     consumeButton.click();
-    expect(serviceSpy.consumePart).toHaveBeenCalled();
-    expect(serviceSpy.consumePart).toHaveBeenCalledWith(component.part.id);
-    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalledWith(res);
+    expect(serviceSpy.consumePart).toHaveBeenCalledOnceWith(component.part.id);
+    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalled();
   });
 
   it('should navigate to manage/ID', () => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CreatePart } from 'src/app/types/parts';
 import { PartService } from '../parts.service';
@@ -61,6 +61,9 @@ export class NewPartComponent {
       };
       this.partService.addPart(data).subscribe((res) => {
         this.partService.handleAddPart(res);
+        //Not sure why I need to do this
+        //mat-form-field will display as invalid
+        //when form is reset if not
         this.pForm?.resetForm();
       });
     }

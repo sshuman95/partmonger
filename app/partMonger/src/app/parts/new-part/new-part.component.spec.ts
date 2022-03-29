@@ -101,12 +101,7 @@ describe('NewPartComponent', () => {
     button.click();
     fixture.detectChanges();
     expect(serviceSpy.addPart).toHaveBeenCalled();
-    expect(serviceSpy.addPart).toHaveBeenCalledWith(data);
     expect(serviceSpy.handleAddPart).toHaveBeenCalled();
-    expect(serviceSpy.handleAddPart).toHaveBeenCalledWith({
-      ...data,
-      id: 5,
-    });
   });
 
   it('should not submit a new part', () => {
