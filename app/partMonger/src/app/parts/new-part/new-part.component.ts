@@ -22,7 +22,6 @@ export class NewPartComponent {
       notes: new FormControl(''),
       image: new FormControl(''),
       isActive: new FormControl(true),
-      inStock: new FormControl(0, [Validators.required, Validators.min(0)]),
       id: new FormControl(0),
     });
   }
@@ -39,7 +38,6 @@ export class NewPartComponent {
         image: this.partForm.get('image')!.value,
         cost: this.partForm.get('cost')!.value,
         isActive: this.partForm.get('isActive')!.value,
-        inStock: this.partForm.get('inStock')!.value,
       };
       this.partService.addPart(data).subscribe((res) => {
         this.partService.handleAddPart(res);

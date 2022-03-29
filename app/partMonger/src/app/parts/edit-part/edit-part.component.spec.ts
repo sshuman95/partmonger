@@ -67,7 +67,6 @@ describe('EditPartComponent', () => {
       notes: 'Mock note',
       image: '',
       isActive: false,
-      inStock: 1,
     };
     expect(component.initForm(PARTSMOCK[0]).value).toEqual(formValue);
   });
@@ -81,7 +80,7 @@ describe('EditPartComponent', () => {
     let form = new FormGroup({});
     let part = PARTSMOCK[0];
     service.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    service.editPart.and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
+    service.editPart.and.returnValue(of({ ...part, cost: 100 }));
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -93,13 +92,11 @@ describe('EditPartComponent', () => {
         name: part.name,
         notes: part.notes,
         partNumber: part.partNumber,
-        inStock: part.inStock,
       });
       form = val;
       done();
     });
     form.get('cost')?.setValue(100);
-    form.get('inStock')?.setValue(500);
     fixture.detectChanges();
     component.handleSubmit(new SubmitEvent('submit'), form);
     fixture.detectChanges();
@@ -121,7 +118,6 @@ describe('EditPartComponent', () => {
         name: 'Mock Part 1',
         notes: 'Mock note',
         partNumber: 'mockPart1',
-        inStock: 1,
       });
       form = val;
       done();

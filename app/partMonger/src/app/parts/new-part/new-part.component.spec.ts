@@ -52,7 +52,6 @@ describe('NewPartComponent', () => {
       image: '',
       cost: 100,
       isActive: true,
-      inStock: 1,
     };
     service.addPart.and.returnValue(of({ ...data, id: 5 }));
     component.partForm.setValue({
@@ -64,7 +63,6 @@ describe('NewPartComponent', () => {
       image: '',
       isActive: true,
       id: 0,
-      inStock: 1,
     });
     fixture.detectChanges();
     let button = fixture.debugElement.query(By.css('button')).nativeElement;

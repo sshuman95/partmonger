@@ -185,7 +185,6 @@ export const CREATEPARTMOCK: CreatePart = {
   image: 'http://localhost:9001/images/myimage.jpg',
   notes: '',
   isActive: true,
-  inStock: 10,
 };
 
 export const NEWPARTMOCK: Part = {

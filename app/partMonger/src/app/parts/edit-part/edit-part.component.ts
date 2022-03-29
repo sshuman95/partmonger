@@ -51,10 +51,6 @@ export class EditPartComponent implements OnInit {
       notes: new FormControl(part.notes ? part.notes : ''),
       image: new FormControl(part.image ? part.image : ''),
       isActive: new FormControl(part.isActive),
-      inStock: new FormControl(part.inStock, [
-        Validators.required,
-        Validators.min(0),
-      ]),
       id: new FormControl(part.id),
     });
     return partForm;

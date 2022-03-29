@@ -17,7 +17,6 @@ export interface CreatePart {
   image: string;
   notes: string;
   isActive: boolean;
-  inStock:number;
 }
 
 export interface EditPart {

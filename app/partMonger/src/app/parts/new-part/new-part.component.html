@@ -31,19 +31,6 @@
       partForm.get("cost")?.errors | inputError: "Cost"
     }}</mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill" [hideRequiredMarker]="true">
-    <mat-label>Stock Quantity</mat-label>
-    <input
-      type="number"
-      [min]="0"
-      matInput
-      placeholder="Stock Quantity"
-      formControlName="inStock"
-    />
-    <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
-      partForm.get("inStock")?.errors | inputError: "Stock Quantity"
-    }}</mat-error>
-  </mat-form-field>
   <mat-form-field class="image" appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Image url</mat-label>
     <input matInput formControlName="image" placeholder="Image Url" />
@@ -60,8 +47,8 @@
     }}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
-    <mat-label>Notes</mat-label>
-    <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
+    <mat-label>Comments</mat-label>
+    <textarea matInput formControlName="notes" placeholder="Comments"></textarea>
   </mat-form-field>
   <button type="submit" mat-raised-button color="primary">Submit</button>
 </form>
