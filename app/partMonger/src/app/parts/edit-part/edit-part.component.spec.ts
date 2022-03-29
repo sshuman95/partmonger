@@ -65,6 +65,7 @@ describe('EditPartComponent', () => {
       notes: 'Mock note',
       image: '',
       isActive: false,
+      inStock: 1,
     };
     expect(component.initForm(PARTSMOCK[0]).value).toEqual(formValue);
   });
@@ -82,40 +83,58 @@ describe('EditPartComponent', () => {
     expect(component.getCostError(new FormGroup({}))).toEqual('');
   });
 
-  it('should submit an updated part and call handleUpdate', (done: DoneFn) => {
+  it('should return the proper inStock error message', () => {
+    let form = component.initForm(PARTSMOCK[0]);
+    form.get('inStock')?.setValue(undefined);
+    expect(component.getStockError(form)).toEqual(component.requiredMessage);
+    form.get('inStock')?.setValue(-1);
+    expect(component.getStockError(form)).toEqual(
+      'Stock Quantity must be at least 0.'
+    );
+    form.get('inStock')?.setValue(10);
+    expect(component.getStockError(form)).toEqual('');
+    expect(component.getStockError(new FormGroup({}))).toEqual('');
+  });
+
+  it('should submit a valid part and call handleUpdate', () => {
     let form = new FormGroup({});
-    let res = { ...PARTSMOCK[0], cost: 100 };
+    let part = PARTSMOCK[0];
     serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.editPart.and.returnValue(of(res));
+    serviceSpy.editPart.and
+      .callThrough()
+      .and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
+    serviceSpy.handleEditPart.and.callThrough();
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
-        cost: 10,
-        description: 'mock part',
-        id: 1,
-        image: '',
-        isActive: false,
-        name: 'Mock Part 1',
-        notes: 'Mock note',
-        partNumber: 'mockPart1',
+        cost: part.cost,
+        description: part.description,
+        id: part.id,
+        image: part.image,
+        isActive: part.isActive,
+        name: part.name,
+        notes: part.notes,
+        partNumber: part.partNumber,
+        inStock: part.inStock,
       });
       form = val;
-      done();
     });
     form.get('cost')?.setValue(100);
+    form.get('inStock')?.setValue(500);
     fixture.detectChanges();
     component.handleSubmit(new SubmitEvent('submit'), form);
     fixture.detectChanges();
     expect(serviceSpy.editPart).toHaveBeenCalledWith(form.value);
+    expect(serviceSpy.editPart.calls.mostRecent().args[0]).toEqual(form.value);
     expect(serviceSpy.handleEditPart).toHaveBeenCalledTimes(1);
-    expect(serviceSpy.handleEditPart).toHaveBeenCalledWith(res);
+    expect(serviceSpy.handleEditPart.calls.mostRecent().args[0]).toEqual(
+      form.value
+    );
   });
 
-  it('should not submit an updated part', (done: DoneFn) => {
+  it('should not submit an invalid part', (done: DoneFn) => {
     let form = new FormGroup({});
-    let res = { ...PARTSMOCK[0], cost: 100 };
     serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.editPart.and.returnValue(of(res));
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -127,6 +146,7 @@ describe('EditPartComponent', () => {
         name: 'Mock Part 1',
         notes: 'Mock note',
         partNumber: 'mockPart1',
+        inStock: 1,
       });
       form = val;
       done();

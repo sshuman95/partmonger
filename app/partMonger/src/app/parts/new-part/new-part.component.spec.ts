@@ -56,6 +56,23 @@ describe('NewPartComponent', () => {
     expect(component.getCostError()).toEqual('');
   });
 
+  it('should display the proper error message for inStock', () => {
+    component.partForm.get('inStock')?.setValue(undefined);
+    fixture.detectChanges();
+    expect(component.getStockError()).toEqual(component.requiredMessage);
+    component.partForm.get('inStock')?.setValue(-1);
+    fixture.detectChanges();
+    expect(component.getStockError()).toEqual(
+      'Stock Quantity must be greater than 0.'
+    );
+    component.partForm.get('inStock')?.setValue(10);
+    fixture.detectChanges();
+    expect(component.getStockError()).toEqual('');
+    component.partForm.removeControl('inStock');
+    fixture.detectChanges();
+    expect(component.getStockError()).toEqual('');
+  });
+
   it('should add part and call handleAddPart if the form is valid', () => {
     let data = {
       name: 'Sidney Test Part',
@@ -65,6 +82,7 @@ describe('NewPartComponent', () => {
       image: '',
       cost: 100,
       isActive: true,
+      inStock: 1,
     };
     serviceSpy.addPart.and.returnValue(of({ ...data, id: 5 }));
     component.partForm.setValue({
@@ -76,6 +94,7 @@ describe('NewPartComponent', () => {
       image: '',
       isActive: true,
       id: 0,
+      inStock: 1,
     });
     fixture.detectChanges();
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
@@ -88,5 +107,12 @@ describe('NewPartComponent', () => {
       ...data,
       id: 5,
     });
+  });
+
+  it('should not submit a new part', () => {
+    let button = fixture.debugElement.query(By.css('button')).nativeElement;
+    button.click();
+    expect(serviceSpy.addPart).not.toHaveBeenCalled();
+    expect(serviceSpy.handleAddPart).not.toHaveBeenCalled();
   });
 });

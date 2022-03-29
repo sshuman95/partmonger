@@ -20,6 +20,7 @@ export class NewPartComponent {
       notes: new FormControl(''),
       image: new FormControl(''),
       isActive: new FormControl(true),
+      inStock: new FormControl(0, [Validators.required, Validators.min(0)]),
       id: new FormControl(0),
     });
   }
@@ -33,7 +34,14 @@ export class NewPartComponent {
       : '';
   }
 
-
+  getStockError() {
+    if (this.partForm.get('inStock')?.hasError('required')) {
+      return this.requiredMessage;
+    }
+    return this.partForm?.get('inStock')?.hasError('min')
+      ? 'Stock Quantity must be greater than 0.'
+      : '';
+  }
 
   handleSubmit(event: SubmitEvent) {
     event.preventDefault();
@@ -47,6 +55,7 @@ export class NewPartComponent {
         image: this.partForm.get('image')?.value,
         cost: this.partForm.get('cost')?.value,
         isActive: this.partForm.get('isActive')?.value,
+        inStock: this.partForm.get('inStock')?.value,
       };
       this.partService
         .addPart(data)

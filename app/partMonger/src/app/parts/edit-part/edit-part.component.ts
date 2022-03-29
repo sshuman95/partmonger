@@ -48,6 +48,10 @@ export class EditPartComponent implements OnInit {
       notes: new FormControl(part.notes ? part.notes : ''),
       image: new FormControl(part.image ? part.image : ''),
       isActive: new FormControl(part.isActive),
+      inStock: new FormControl(part.inStock, [
+        Validators.required,
+        Validators.min(0),
+      ]),
       id: new FormControl(part.id),
     });
     return partForm;
@@ -62,11 +66,20 @@ export class EditPartComponent implements OnInit {
       : '';
   }
 
+  getStockError(partForm: FormGroup) {
+    if (partForm.get('inStock')?.hasError('required')) {
+      return this.requiredMessage;
+    }
+    return partForm.get('inStock')?.hasError('min')
+      ? 'Stock Quantity must be at least 0.'
+      : '';
+  }
+
   handleSubmit(event: SubmitEvent, form: FormGroup) {
     event.preventDefault();
     form.markAllAsTouched();
     if (form.valid) {
-      this.partService.editPart({ ...form.value }).subscribe((res) => {
+      this.partService.editPart(form.value).subscribe((res) => {
         this.partService.handleEditPart(res);
       });
     }
