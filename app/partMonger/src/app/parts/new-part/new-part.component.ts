@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CreatePart } from 'src/app/types/parts';
 import { PartService } from '../parts.service';
 
@@ -11,6 +11,8 @@ import { PartService } from '../parts.service';
 export class NewPartComponent {
   requiredMessage = 'This field is required';
   partForm: FormGroup;
+  @ViewChild('p') pForm?: NgForm;
+
   constructor(private partService: PartService) {
     this.partForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -57,9 +59,10 @@ export class NewPartComponent {
         isActive: this.partForm.get('isActive')?.value,
         inStock: this.partForm.get('inStock')?.value,
       };
-      this.partService
-        .addPart(data)
-        .subscribe((res) => this.partService.handleAddPart(res));
+      this.partService.addPart(data).subscribe((res) => {
+        this.partService.handleAddPart(res);
+        this.pForm?.resetForm();
+      });
     }
   }
 }

@@ -1,4 +1,9 @@
-<form [formGroup]="partForm" (submit)="handleSubmit($event)" class="part-form">
+<form
+  [formGroup]="partForm"
+  (submit)="handleSubmit($event)"
+  class="part-form"
+  #p="ngForm"
+>
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Part Name</mat-label>
     <input matInput placeholder="Part name" formControlName="name" />
@@ -39,6 +44,10 @@
       getStockError()
     }}</mat-error>
   </mat-form-field>
+  <mat-form-field class="image" appearance="fill" [hideRequiredMarker]="true">
+    <mat-label>Image url</mat-label>
+    <input matInput formControlName="image" placeholder="Image Url" />
+  </mat-form-field>
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Description</mat-label>
     <textarea
@@ -57,10 +66,5 @@
       requiredMessage
     }}</mat-error>
   </mat-form-field>
-  <mat-form-field class="image" appearance="fill" [hideRequiredMarker]="true">
-    <mat-label>Image url</mat-label>
-    <input matInput formControlName="image" placeholder="Image Url" />
-  </mat-form-field>
-
   <button type="submit" mat-raised-button color="primary">Submit</button>
 </form>
