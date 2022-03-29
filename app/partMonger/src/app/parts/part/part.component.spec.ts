@@ -13,10 +13,10 @@ import { PartComponent } from './part.component';
 describe('PartComponent', () => {
   let component: PartComponent;
   let fixture: ComponentFixture<PartComponent>;
-  let serviceSpy: any;
+  let service: any;
   let router: any;
   beforeEach(async () => {
-    serviceSpy = jasmine.createSpyObj('PartService', [
+    const serviceSpy = jasmine.createSpyObj('PartService', [
       'receivePart',
       'consumePart',
       'handleUpdateQuantity',
@@ -38,6 +38,7 @@ describe('PartComponent', () => {
     fixture = TestBed.createComponent(PartComponent);
     component = fixture.componentInstance;
     component.part = PARTSMOCK[0];
+    service = TestBed.inject(PartService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -48,24 +49,24 @@ describe('PartComponent', () => {
 
   it('should call receivePart and update the quantity', () => {
     let res = { ...PARTSMOCK[0], inStock: 2 };
-    serviceSpy.receivePart.and.returnValue(of(res));
+    service.receivePart.and.returnValue(of(res));
     let receiveButton: HTMLButtonElement = fixture.debugElement.query(
       By.css('.receive')
     ).nativeElement;
     receiveButton.click();
-    expect(serviceSpy.receivePart).toHaveBeenCalledOnceWith(component.part.id);
-    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalled();
+    expect(service.receivePart).toHaveBeenCalledOnceWith(component.part.id);
+    expect(service.handleUpdateQuantity).toHaveBeenCalled();
   });
 
   it('should call consumePart and update the quantity', () => {
     let res = { ...PARTSMOCK[0], inStock: 0 };
-    serviceSpy.consumePart.and.returnValue(of(res));
+    service.consumePart.and.returnValue(of(res));
     let consumeButton: HTMLButtonElement = fixture.debugElement.query(
       By.css('.consume')
     ).nativeElement;
     consumeButton.click();
-    expect(serviceSpy.consumePart).toHaveBeenCalledOnceWith(component.part.id);
-    expect(serviceSpy.handleUpdateQuantity).toHaveBeenCalled();
+    expect(service.consumePart).toHaveBeenCalledOnceWith(component.part.id);
+    expect(service.handleUpdateQuantity).toHaveBeenCalled();
   });
 
   it('should navigate to manage/ID', () => {

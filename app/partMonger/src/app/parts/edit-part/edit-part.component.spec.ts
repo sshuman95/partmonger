@@ -18,10 +18,10 @@ import { EditPartComponent } from './edit-part.component';
 describe('EditPartComponent', () => {
   let component: EditPartComponent;
   let fixture: ComponentFixture<EditPartComponent>;
-  let serviceSpy: any;
+  let service: any;
   let router: any;
   beforeEach(async () => {
-    serviceSpy = jasmine.createSpyObj('PartService', [
+    const serviceSpy = jasmine.createSpyObj('PartService', [
       'editPart',
       'deletePart',
       'handleEditPart',
@@ -49,6 +49,7 @@ describe('EditPartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditPartComponent);
     component = fixture.componentInstance;
+    service = TestBed.inject(PartService);
     router = TestBed.inject(Router);
   });
 
@@ -79,10 +80,8 @@ describe('EditPartComponent', () => {
   it('should submit a valid part and call handleUpdate', (done: DoneFn) => {
     let form = new FormGroup({});
     let part = PARTSMOCK[0];
-    serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.editPart.and.returnValue(
-      of({ ...part, cost: 100, inStock: 500 })
-    );
+    service.getPartById.and.returnValue(of(PARTSMOCK[0]));
+    service.editPart.and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -104,13 +103,13 @@ describe('EditPartComponent', () => {
     fixture.detectChanges();
     component.handleSubmit(new SubmitEvent('submit'), form);
     fixture.detectChanges();
-    expect(serviceSpy.editPart).toHaveBeenCalled();
-    expect(serviceSpy.handleEditPart).toHaveBeenCalled();
+    expect(service.editPart).toHaveBeenCalled();
+    expect(service.handleEditPart).toHaveBeenCalled();
   });
 
   it('should not submit an invalid part', (done: DoneFn) => {
     let form = new FormGroup({});
-    serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
+    service.getPartById.and.returnValue(of(PARTSMOCK[0]));
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -131,12 +130,12 @@ describe('EditPartComponent', () => {
     fixture.detectChanges();
     component.handleSubmit(new SubmitEvent('submit'), form);
     fixture.detectChanges();
-    expect(serviceSpy.editPart).not.toHaveBeenCalled();
-    expect(serviceSpy.handleEditPart).not.toHaveBeenCalled();
+    expect(service.editPart).not.toHaveBeenCalled();
+    expect(service.handleEditPart).not.toHaveBeenCalled();
   });
 
   it('should redirect if no id is provided', (done: DoneFn) => {
-    serviceSpy.getPartById.and.returnValue(of({ ...PARTSMOCK[0], id: 0 }));
+    service.getPartById.and.returnValue(of({ ...PARTSMOCK[0], id: 0 }));
     spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
@@ -147,15 +146,15 @@ describe('EditPartComponent', () => {
   });
 
   it('should delete a part and navigate to /new', () => {
-    serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.deletePart.and.returnValue(of(PARTSMOCK[0]));
+    service.getPartById.and.returnValue(of(PARTSMOCK[0]));
+    service.deletePart.and.returnValue(of(PARTSMOCK[0]));
     spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
     let button = fixture.debugElement.query(By.css('.delete')).nativeElement;
     button.click();
     fixture.detectChanges();
-    expect(serviceSpy.deletePart).toHaveBeenCalledOnceWith(1);
-    expect(serviceSpy.handleDeletePart).toHaveBeenCalledOnceWith(1);
+    expect(service.deletePart).toHaveBeenCalledOnceWith(1);
+    expect(service.handleDeletePart).toHaveBeenCalledOnceWith(1);
     expect(router.navigateByUrl).toHaveBeenCalledWith('manage/new');
   });
 });

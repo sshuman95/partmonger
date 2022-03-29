@@ -13,9 +13,9 @@ import { NewPartComponent } from './new-part.component';
 describe('NewPartComponent', () => {
   let component: NewPartComponent;
   let fixture: ComponentFixture<NewPartComponent>;
-  let serviceSpy: any;
+  let service: any;
   beforeEach(async () => {
-    serviceSpy = jasmine.createSpyObj('PartService', [
+    const serviceSpy = jasmine.createSpyObj('PartService', [
       'addPart',
       'handleAddPart',
     ]);
@@ -35,6 +35,7 @@ describe('NewPartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NewPartComponent);
     component = fixture.componentInstance;
+    service = TestBed.inject(PartService);
     fixture.detectChanges();
   });
 
@@ -53,7 +54,7 @@ describe('NewPartComponent', () => {
       isActive: true,
       inStock: 1,
     };
-    serviceSpy.addPart.and.returnValue(of({ ...data, id: 5 }));
+    service.addPart.and.returnValue(of({ ...data, id: 5 }));
     component.partForm.setValue({
       name: 'Sidney Test Part',
       cost: 100,
@@ -69,14 +70,14 @@ describe('NewPartComponent', () => {
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
     fixture.detectChanges();
-    expect(serviceSpy.addPart).toHaveBeenCalled();
-    expect(serviceSpy.handleAddPart).toHaveBeenCalled();
+    expect(service.addPart).toHaveBeenCalled();
+    expect(service.handleAddPart).toHaveBeenCalled();
   });
 
   it('should not submit a new part', () => {
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
-    expect(serviceSpy.addPart).not.toHaveBeenCalled();
-    expect(serviceSpy.handleAddPart).not.toHaveBeenCalled();
+    expect(service.addPart).not.toHaveBeenCalled();
+    expect(service.handleAddPart).not.toHaveBeenCalled();
   });
 });
