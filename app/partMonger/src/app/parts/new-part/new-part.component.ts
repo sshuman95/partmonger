@@ -9,7 +9,7 @@ import { PartService } from '../parts.service';
   styleUrls: ['./new-part.component.scss'],
 })
 export class NewPartComponent {
-  requiredMessage = 'This field is required';
+  requiredMessage = 'This field is required.';
   partForm: FormGroup;
   @ViewChild('p') pForm?: NgForm;
 
@@ -27,37 +27,19 @@ export class NewPartComponent {
     });
   }
 
-  getCostError() {
-    if (this.partForm.get('cost')?.hasError('required')) {
-      return this.requiredMessage;
-    }
-    return this.partForm?.get('cost')?.hasError('min')
-      ? 'Cost must be greater than 0.'
-      : '';
-  }
-
-  getStockError() {
-    if (this.partForm.get('inStock')?.hasError('required')) {
-      return this.requiredMessage;
-    }
-    return this.partForm?.get('inStock')?.hasError('min')
-      ? 'Stock Quantity must be greater than 0.'
-      : '';
-  }
-
   handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     this.partForm.markAllAsTouched();
     if (this.partForm.valid) {
       let data: CreatePart = {
-        name: this.partForm.get('name')?.value,
-        partNumber: this.partForm.get('partNumber')?.value,
-        description: this.partForm.get('description')?.value,
-        notes: this.partForm.get('notes')?.value,
-        image: this.partForm.get('image')?.value,
-        cost: this.partForm.get('cost')?.value,
-        isActive: this.partForm.get('isActive')?.value,
-        inStock: this.partForm.get('inStock')?.value,
+        name: this.partForm.get('name')!.value,
+        partNumber: this.partForm.get('partNumber')!.value,
+        description: this.partForm.get('description')!.value,
+        notes: this.partForm.get('notes')!.value,
+        image: this.partForm.get('image')!.value,
+        cost: this.partForm.get('cost')!.value,
+        isActive: this.partForm.get('isActive')!.value,
+        inStock: this.partForm.get('inStock')!.value,
       };
       this.partService.addPart(data).subscribe((res) => {
         this.partService.handleAddPart(res);

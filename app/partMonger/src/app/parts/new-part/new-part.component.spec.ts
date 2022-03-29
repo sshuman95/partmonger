@@ -6,6 +6,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
+import { InputErrorPipe } from 'src/app/pipes/input-error.pipe';
 import { PartService } from '../parts.service';
 import { NewPartComponent } from './new-part.component';
 
@@ -19,7 +20,7 @@ describe('NewPartComponent', () => {
       'handleAddPart',
     ]);
     await TestBed.configureTestingModule({
-      declarations: [NewPartComponent],
+      declarations: [NewPartComponent, InputErrorPipe],
       imports: [
         MatInputModule,
         MatFormFieldModule,
@@ -39,38 +40,6 @@ describe('NewPartComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display the proper error message for cost', () => {
-    component.partForm.get('cost')?.setValue(undefined);
-    fixture.detectChanges();
-    expect(component.getCostError()).toEqual(component.requiredMessage);
-    component.partForm.get('cost')?.setValue(-1);
-    fixture.detectChanges();
-    expect(component.getCostError()).toEqual('Cost must be greater than 0.');
-    component.partForm.get('cost')?.setValue(10);
-    fixture.detectChanges();
-    expect(component.getCostError()).toEqual('');
-    component.partForm.removeControl('cost');
-    fixture.detectChanges();
-    expect(component.getCostError()).toEqual('');
-  });
-
-  it('should display the proper error message for inStock', () => {
-    component.partForm.get('inStock')?.setValue(undefined);
-    fixture.detectChanges();
-    expect(component.getStockError()).toEqual(component.requiredMessage);
-    component.partForm.get('inStock')?.setValue(-1);
-    fixture.detectChanges();
-    expect(component.getStockError()).toEqual(
-      'Stock Quantity must be greater than 0.'
-    );
-    component.partForm.get('inStock')?.setValue(10);
-    fixture.detectChanges();
-    expect(component.getStockError()).toEqual('');
-    component.partForm.removeControl('inStock');
-    fixture.detectChanges();
-    expect(component.getStockError()).toEqual('');
   });
 
   it('should add part and call handleAddPart if the form is valid', () => {

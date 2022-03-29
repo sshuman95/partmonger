@@ -33,7 +33,7 @@
           formControlName="cost"
         />
         <mat-error *ngIf="partForm.get('cost')?.invalid">{{
-          getCostError(partForm)
+          partForm.get("cost")?.errors | inputError: "Cost"
         }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" [hideRequiredMarker]="true">
@@ -46,7 +46,7 @@
           formControlName="inStock"
         />
         <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
-          getStockError(partForm)
+          partForm.get("inStock")?.errors | inputError: "Stock Quantity"
         }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" [hideRequiredMarker]="true">

@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule } from '@angular/router';
+import { InputErrorPipe } from '../pipes/input-error.pipe';
 import { EditPartComponent } from './edit-part/edit-part.component';
 import { ManagePartsComponent } from './manage-parts/manage-parts.component';
 import { NewPartComponent } from './new-part/new-part.component';
@@ -22,6 +23,7 @@ import { PartsComponent } from './parts/parts.component';
     ManagePartsComponent,
     NewPartComponent,
     EditPartComponent,
+    InputErrorPipe,
   ],
   imports: [
     CommonModule,

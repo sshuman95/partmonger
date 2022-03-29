@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { PARTSMOCK } from 'src/app/mocks/parts-mock';
+import { InputErrorPipe } from 'src/app/pipes/input-error.pipe';
 import { NewPartComponent } from '../new-part/new-part.component';
 import { PartService } from '../parts.service';
 import { EditPartComponent } from './edit-part.component';
@@ -29,7 +30,7 @@ describe('EditPartComponent', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      declarations: [EditPartComponent],
+      declarations: [EditPartComponent, InputErrorPipe],
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([
@@ -70,37 +71,18 @@ describe('EditPartComponent', () => {
     expect(component.initForm(PARTSMOCK[0]).value).toEqual(formValue);
   });
 
-  it('should return the proper cost error message', () => {
-    let form = component.initForm(PARTSMOCK[0]);
-    form.get('cost')?.setValue(undefined);
-    expect(component.getCostError(form)).toEqual(component.requiredMessage);
-    form.get('cost')?.setValue(-1);
-    expect(component.getCostError(form)).toEqual(
-      'Cost must be greater than 0.'
-    );
-    form.get('cost')?.setValue(10);
-    expect(component.getCostError(form)).toEqual('');
-    expect(component.getCostError(new FormGroup({}))).toEqual('');
+  it('should return a number or 0', () => {
+    expect(component.formatId({ id: 'test' })).toBe(0);
+    expect(component.formatId({ id: 100 })).toBe(100);
   });
 
-  it('should return the proper inStock error message', () => {
-    let form = component.initForm(PARTSMOCK[0]);
-    form.get('inStock')?.setValue(undefined);
-    expect(component.getStockError(form)).toEqual(component.requiredMessage);
-    form.get('inStock')?.setValue(-1);
-    expect(component.getStockError(form)).toEqual(
-      'Stock Quantity must be at least 0.'
-    );
-    form.get('inStock')?.setValue(10);
-    expect(component.getStockError(form)).toEqual('');
-    expect(component.getStockError(new FormGroup({}))).toEqual('');
-  });
-
-  it('should submit a valid part and call handleUpdate', (done:DoneFn) => {
+  it('should submit a valid part and call handleUpdate', (done: DoneFn) => {
     let form = new FormGroup({});
     let part = PARTSMOCK[0];
     serviceSpy.getPartById.and.returnValue(of(PARTSMOCK[0]));
-    serviceSpy.editPart.and.returnValue(of({ ...part, cost: 100, inStock: 500 }));
+    serviceSpy.editPart.and.returnValue(
+      of({ ...part, cost: 100, inStock: 500 })
+    );
     fixture.detectChanges();
     component.partForm$?.subscribe((val) => {
       expect(val.value).toEqual({
@@ -172,7 +154,7 @@ describe('EditPartComponent', () => {
     let button = fixture.debugElement.query(By.css('.delete')).nativeElement;
     button.click();
     fixture.detectChanges();
-    expect(serviceSpy.deletePart).toHaveBeenCalledOnceWith(1)
+    expect(serviceSpy.deletePart).toHaveBeenCalledOnceWith(1);
     expect(serviceSpy.handleDeletePart).toHaveBeenCalledOnceWith(1);
     expect(router.navigateByUrl).toHaveBeenCalledWith('manage/new');
   });

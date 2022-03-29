@@ -28,7 +28,7 @@
       formControlName="cost"
     />
     <mat-error *ngIf="partForm.get('cost')?.invalid">{{
-      getCostError()
+      partForm.get("cost")?.errors | inputError: "Cost"
     }}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
@@ -41,7 +41,7 @@
       formControlName="inStock"
     />
     <mat-error *ngIf="partForm.get('inStock')?.invalid">{{
-      getStockError()
+      partForm.get("inStock")?.errors | inputError: "Stock Quantity"
     }}</mat-error>
   </mat-form-field>
   <mat-form-field class="image" appearance="fill" [hideRequiredMarker]="true">
@@ -62,9 +62,6 @@
   <mat-form-field appearance="fill" [hideRequiredMarker]="true">
     <mat-label>Notes</mat-label>
     <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
-    <mat-error *ngIf="partForm.get('notes')?.invalid">{{
-      requiredMessage
-    }}</mat-error>
   </mat-form-field>
   <button type="submit" mat-raised-button color="primary">Submit</button>
 </form>

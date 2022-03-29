@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { Part } from '../../types/parts';
@@ -12,7 +12,7 @@ import { PartService } from '../parts.service';
   styleUrls: ['./edit-part.component.scss'],
 })
 export class EditPartComponent implements OnInit {
-  requiredMessage = 'This field is required';
+  requiredMessage = 'This field is required.';
   partForm$?: Observable<FormGroup>;
   constructor(
     private route: ActivatedRoute,
@@ -23,8 +23,7 @@ export class EditPartComponent implements OnInit {
   ngOnInit(): void {
     this.partForm$ = this.route.params.pipe(
       switchMap((params) => {
-        let id = !isNaN(+params['id']) ? +params['id'] : 0;
-        return this.partService.getPartById(id).pipe(
+        return this.partService.getPartById(this.formatId(params)).pipe(
           tap((data) => {
             if (!data.id) {
               this.router.navigateByUrl('manage/new');
@@ -34,6 +33,10 @@ export class EditPartComponent implements OnInit {
         );
       })
     );
+  }
+
+  formatId(params: Params) {
+    return !isNaN(+params['id']) ? +params['id'] : 0;
   }
 
   initForm(part: Part) {
@@ -57,29 +60,11 @@ export class EditPartComponent implements OnInit {
     return partForm;
   }
 
-  getCostError(partForm: FormGroup) {
-    if (partForm.get('cost')?.hasError('required')) {
-      return this.requiredMessage;
-    }
-    return partForm.get('cost')?.hasError('min')
-      ? 'Cost must be greater than 0.'
-      : '';
-  }
-
-  getStockError(partForm: FormGroup) {
-    if (partForm.get('inStock')?.hasError('required')) {
-      return this.requiredMessage;
-    }
-    return partForm.get('inStock')?.hasError('min')
-      ? 'Stock Quantity must be at least 0.'
-      : '';
-  }
-
   handleSubmit(event: SubmitEvent, form: FormGroup) {
     event.preventDefault();
     form.markAllAsTouched();
     if (form.valid) {
-      this.partService.editPart(form.value).subscribe((res) => {
+      this.partService.editPart({...form.value}).subscribe((res) => {
         this.partService.handleEditPart(res);
       });
     }
