@@ -71,7 +71,6 @@ describe('PartsService', () => {
     service.getPartById(500).subscribe((res) => {
       expect(res).toBeTruthy();
       expect(res.id).toEqual(0);
-      expect(res).toEqual(service.getNewPart());
     });
     const req = httpTestController.expectOne('http://localhost:9001/parts/500');
     expect(req.request.method).toEqual('GET');
